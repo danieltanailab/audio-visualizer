@@ -3,9 +3,13 @@ from openai import OpenAI
 
 async def summarize_text(text, api_key):
     """Summarize text using OpenAI GPT-4o with user-provided or server API key"""
-    client = OpenAI(api_key=api_key)
+    # Set API key in environment temporarily to avoid proxies parameter issue
+    original_key = os.environ.get("OPENAI_API_KEY")
+    os.environ["OPENAI_API_KEY"] = api_key
     
     try:
+        client = OpenAI()  # Will use OPENAI_API_KEY from environment
+        
         response = client.chat.completions.create(
             model="gpt-4o",
             messages=[
@@ -42,3 +46,9 @@ async def summarize_text(text, api_key):
     except Exception as e:
         print(f"Summarization error: {e}")
         raise e
+    finally:
+        # Restore original API key
+        if original_key:
+            os.environ["OPENAI_API_KEY"] = original_key
+        elif "OPENAI_API_KEY" in os.environ:
+            del os.environ["OPENAI_API_KEY"]
