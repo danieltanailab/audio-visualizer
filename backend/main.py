@@ -1,9 +1,9 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from services.transcribe import transcribe_audio
+from services.transcribe import transcribe_audio_file
 from services.summarize import summarize_text
-from services.visualize import visualize_text
+from services.visualize import visualize_text_data
 import shutil
 import os
 
@@ -75,7 +75,17 @@ async def transcribe_audio(
         if file_size == 0:
             raise HTTPException(status_code=400, detail="Uploaded file is empty")
         
-        transcript = await transcribe_audio(temp_file_path)
+        # Create a mock file object for the service
+        class MockFile:
+            def __init__(self, path):
+                self.filename = os.path.basename(path)
+                self.path = path
+            async def read(self):
+                with open(self.path, 'rb') as f:
+                    return f.read()
+        
+        mock_file = MockFile(temp_file_path)
+        transcript = await transcribe_audio_file(mock_file, api_key)
         
         # Clean up
         # os.remove(temp_file_path)
