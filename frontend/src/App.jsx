@@ -7,9 +7,10 @@ import ApiKeySettings from './ApiKeySettings';
 import { saveAs } from 'file-saver';
 import { compressAudio } from './audioUtils';
 
-const API_URL = window.location.hostname === 'localhost'
-  ? 'http://127.0.0.1:8000'
-  : 'http://192.168.5.185:8000';
+const API_URL = import.meta.env.VITE_API_URL ||
+  (window.location.hostname === 'localhost'
+    ? 'http://127.0.0.1:8000'
+    : 'http://192.168.5.185:8000');
 
 function App() {
   const [isRecording, setIsRecording] = useState(false);
