@@ -1,0 +1,9 @@
+# 不要上传敏感和临时文件
+backend/.env
+backend/temp_*.wav
+backend/temp_*.mp3
+backend/backend.log
+backend/__pycache__/
+
+
+
