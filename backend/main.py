@@ -19,7 +19,10 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:5173",
         "http://127.0.0.1:5173",
-        "http://192.168.5.185:5173"  # Your network IP
+        "http://192.168.5.185:5173",
+        "https://audio-visualizer-ebon.vercel.app",  # Your Vercel URL
+        "https://audio-visualizer-git-main-daniel-tans-projects-a60c84bd.vercel.app",  # Vercel preview URL
+        "https://audio-visualizer-5ixv7iwt2-daniel-tans-projects-a60c84bd.vercel.app"  # Another Vercel preview URL
     ],
     allow_credentials=True,
     allow_methods=["*"],
