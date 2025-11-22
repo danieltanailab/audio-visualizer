@@ -100,7 +100,7 @@ async def transcribe_audio(
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/summarize")
-async def summarize_text(
+async def summarize_endpoint(
     request: TextRequest,
     openai_api_key: str = Header(None, alias="X-OpenAI-API-Key")
 ):
@@ -114,6 +114,7 @@ async def summarize_text(
         summary = await summarize_text(request.text, api_key)
         return {"summary": summary}
     except Exception as e:
+        logging.error(f"Error during summarization: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/visualize")
